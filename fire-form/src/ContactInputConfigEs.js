@@ -8,13 +8,14 @@ export const ContactInputConfig = {
     title: "Solicitud de Experto en Orum 🚀",
     description:
       "Vence al reloj ⏰ y conviértete en un experto en solo 5 minutos!",
-    buttonText: "Vamos a rockear",
+    buttonText: "Aplica como experto",
   },
   thanksPage: {
     title: "¡Eres increíble! Tu solicitud está en órbita 🌟",
     description:
       "¡Misión cumplida! En menos de 5 minutos has dado un paso gigante hacia ser un líder de bienestar con Orum. Estamos revisando tu solicitud con atención plena y entusiasmo. 💫",
     buttonText: "Sigue Explorando",
+    href: "/",
   },
   collectionName: "nuevos-expertos",
   inputs: [

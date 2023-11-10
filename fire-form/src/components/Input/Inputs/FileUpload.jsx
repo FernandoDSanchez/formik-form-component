@@ -1,7 +1,7 @@
 import { useFormikContext, ErrorMessage } from "formik";
 import ArrowIcon from "../../../icons/ArrowIcon";
 import { useState, useEffect } from "react";
-
+import { motion } from "framer-motion"
 const FileUpload = ({
   name,
   title,
@@ -11,6 +11,7 @@ const FileUpload = ({
   accept,
   helpText,
 }) => {
+  const [isFocused, setIsFocused] = useState(false);
   const { setFieldValue, values } = useFormikContext();
   const [imageSrc, setImageSrc] = useState(null);
   useEffect(() => {
@@ -55,8 +56,10 @@ const FileUpload = ({
         {title} {requiredSign}
       </span>
       <small className="text-xl text-gray-600 pb-8">{helpText}</small>
-      <label htmlFor={name}>
-        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+      <motion.div animate={{ scale: isFocused ? 1.01 : 1 }} transition={{ type: "spring", stiffness: 100 }}>
+      <label htmlFor={name} onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}>
+        <div className="flex flex-col items-center justify-center pt-5 pb-6 border-4 border-dashed rounded-lg">
           <ArrowIcon />
           <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
             <span className="font-semibold">Click to upload</span> or drag and
@@ -78,6 +81,7 @@ const FileUpload = ({
           onChange={handleFileChange}
         />
       </label>
+      </motion.div>
       <ErrorMessage name={name} component="div" className="error" />
     </div>
   );

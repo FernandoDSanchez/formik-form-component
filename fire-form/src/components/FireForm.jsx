@@ -1,13 +1,15 @@
 "use client";
 import React, { useState } from "react";
 import Info from "./infoScreens/Info";
-import NavButton from "./buttons/NavButton";
+import BackButton from "./buttons/BackButton";
 import InputField from "./Input/InputField";
-
-const FireForm = ({ formConfig }) => {
+import NavButton from "./buttons/NavButton";
+import ProgressBar from "./progress/ProgressBar";
+const FireForm = ({ formConfig, handleFormData }) => {
   const [step, setStep] = useState(0);
   const [showWelcome, setShowWelcome] = useState(true);
   const [showThanks, setShowWThanks] = useState(false);
+  const isLastStep = step === formConfig.inputs.length - 1;
 
   const nextStep = () => {
     if (showWelcome) {
@@ -24,8 +26,6 @@ const FireForm = ({ formConfig }) => {
     setStep(step - 1);
   };
 
-  const isLastStep = step === formConfig.inputs.length - 1;
-
   const generateInitialValues = (inputs) => {
     let initialValues = {};
     inputs.forEach((input) => {
@@ -36,22 +36,28 @@ const FireForm = ({ formConfig }) => {
 
   return (
     <>
-      <section className=" p-4 flex flex-col h-full w-full max-w-3xl text-slate-900 dark:text-white  ">
+    {showWelcome || showThanks? null : <ProgressBar totalSteps={formConfig.inputs.length} currentStep={step} ></ProgressBar>}
+      <section className="mb-auto mt-auto p-4 flex flex-col h-full w-full max-w-3xl text-slate-900 dark:text-white  ">
         {showWelcome ? (
           formConfig.welcomePage ? (
             <Info Info={formConfig.welcomePage} nextStep={nextStep}></Info>
           ) : null
         ) : showThanks ? (
           formConfig.thanksPage ? (
-            <Info Info={formConfig.thanksPage} nextStep={nextStep}></Info>
+            <Info Info={formConfig.thanksPage} nextStep={nextStep}>
+              <NavButton
+                text={formConfig.thanksPage.buttonText}
+                href={formConfig.thanksPage.href}
+              ></NavButton>
+            </Info>
           ) : null
         ) : (
           <>
             {step >= 1 ? (
-              <NavButton backStep={backStep} />
+              <BackButton backStep={backStep} />
             ) : (
               <div className="invisible">
-                <NavButton backStep={backStep} className="invisible" />
+                <BackButton backStep={backStep} className="invisible" />
               </div>
             )}
             <InputField
@@ -60,6 +66,7 @@ const FireForm = ({ formConfig }) => {
               nextStep={nextStep}
               step={step}
               isLastStep={isLastStep}
+              handleFormData={handleFormData}
             ></InputField>
           </>
         )}
